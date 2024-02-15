@@ -1,0 +1,50 @@
+.dummy{
+	color : black;
+}
+.innerBox{
+    height: 30%;
+    width: 35%;
+}
+.withPhone{
+    font-size: 40px;
+    font-weight: bolder;
+    font-style: normal;
+	color:rgb(58, 133, 74);
+}
+
+.withoutPhone{
+    font-size: 40px;
+    font-weight: bolder;
+    font-style: normal;
+	color:rgb(238, 90, 74);
+}
+
+.TotalRecords{
+    font-size: 40px;
+    font-weight: bolder;
+    font-style: normal;
+	color: linear-gradient(rgb(238, 90, 74), rgb(58, 133, 74));;
+}
+
+.month{
+    font-size: 40px;
+    font-family: monospace;
+    opacity: 60%;
+}
+
+.infoSectionGap{
+    padding-top: 5%;
+}
+
+.infosection{
+    height: auto;
+    width: 100%;
+    min-height: auto;
+    max-height: auto; 
+    --slds-c-card-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.Text{
+	font-size: 30px;
+	font-weight: bolder;
+}

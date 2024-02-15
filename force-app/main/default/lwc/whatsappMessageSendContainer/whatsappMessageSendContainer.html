@@ -1,0 +1,175 @@
+<template>
+    <template if:true={loader}>
+        <lightning-spinner 
+            alternative-text="Loading..." 
+            size="large"
+            variant="brand"
+        ></lightning-spinner>
+    </template>
+    
+    <div class="slds-grid slds-wrap communicationtable">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12 paichartcontiner">
+            <div class="paichartcontiner">
+                <h1>Communication Insights</h1>
+                <!--<c-bulk-communication-statics chart-data={chartStatics}></c-bulk-communication-statics>
+                call pie chart -->
+                 <c-pie-chart 
+                objname = {parameters.objectName}
+                selected-ids = {parameters.recordIds}
+                phone-field-a-p-i-name = {parameters.phonefield}
+                name-field-a-p-i-name = {parameters.nameField}
+                opt-field= {parameters.optField}
+                ></c-pie-chart>
+            </div>
+            </div>
+        <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
+            <div class="tablecontiner">
+                <h1>Target Audience</h1>
+                <div class="myTable slds-p-around_medium" style="height: 450px;">                    
+                    <!-- <lightning-datatable
+                            key-field="id"
+                            data={data}
+                            columns={columns}
+                            class="custom-datatable-style"
+                            hide-checkbox-column = true
+                            >                            
+                    </lightning-datatable> -->
+                    <c-lightning-data-table columns={columns} tabledata={records} onrowaction={handleRowAction}></c-lightning-data-table>
+                </div>
+                <div class="slds-grid slds-grid_align-center">
+                    <div class="slds-p-top_small slds-p-bottom_small">
+                        <!-- <lightning-button label="Send Message" disabled={sendDisabled} variant="brand" onclick={finish}></lightning-button>
+                        <lightning-button label="Schedule" variant="brand" onclick={handleClick}></lightning-button>
+                        <lightning-button label="Cancel" onclick={navigateToList}></lightning-button> -->
+                        <button class="slds-button slds-button_brand" disabled={sendDisabled}  onclick={finish}>Send</button>
+                        <button class="slds-button slds-button_brand" onclick={handleClick}>Schedule</button>
+                        <button class="slds-button slds-button_brand" onclick={navigateToCallingSource}>Cancel</button>
+                    </div>
+                   
+                </div>
+                
+            </div>
+            
+        </div>
+        <template lwc:if={showSchedular}>
+            <!--<c-create-scheduler selected-ids={selectedIds} objname={objname} phone-field-a-p-i-name={phoneFieldAPIName} name-field-a-p-i-name={nameFieldAPIName} selected-template-id={selectedTemplateId} report-id={reportId} onclose={handleClose}></c-create-scheduler>-->
+            <c-create-scheduler schedule-data={objParameters} onclose={handleClose}></c-create-scheduler>
+        </template>
+        </div>
+    
+</template>
+
+
+<!-- 
+<template>
+    <lightning-card>  
+            <template if:true={loader}>
+                <lightning-spinner 
+                    alternative-text="Loading..." 
+                    size="large"
+                    variant="brand"
+                ></lightning-spinner>
+            </template>
+            
+            <br/>
+             
+        <!- <c-wizard header="Send Whatsapp Message" variant="base" oncomplete={finish} current-step="step-1" finish-label="Send Message" >  -->
+            <!--   <c-wizard header="Send Whatsapp Message" variant="base" current-step="step-1"  >
+                <c-wizard-step label="Preview Messages" name="step-1" hide-previous-button="false">   ->
+            <div class="slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none slds-align_absolute-center">
+                    <lightning-layout multiple-rows vertical-align="stretch" >
+                        <lightning-layout-item class="custom-box slds-box bordercolor" padding="around-small" size="12">
+                            <div class="wedgbarcard"> 
+                            <h2> <strong></strong>Send Bulk Message </strong></h2>
+                            </div> 
+                            <div class="slds-grid slds-wrap slds-p-around_small">
+                                <div class="slds-col slds-size--1-of-1  slds-medium-size--1-of-8">
+                                </div>
+                                <div class="slds-col slds-size--1-of-1  slds-medium-size--2-of-8">
+                                    <div class="slds-text-align_center slds-m-around--x-small">
+                                        <c-numberstats label="Total communication" varient="black" value={totalRecords}></c-numberstats>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size--1-of-1  slds-medium-size--2-of-8">
+                                    <div class="slds-text-align_center slds-m-around--x-small">
+                                        <c-numberstats label="Communication to be attempted" varient="black" value={totalRecordsWithPhone}></c-numberstats>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size--1-of-1  slds-medium-size--2-of-8">
+                                    <div class="slds-text-align_center slds-m-around--x-small">
+                                        <c-numberstats label="Communications without number " varient="black" value={totalRecordsWithoutPhoneNo}></c-numberstats>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size--1-of-1  slds-medium-size--1-of-8">
+                                </div>
+                            </div>
+   
+
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size--1-of-1  slds-medium-size--1-of-8">
+                            </div>
+                            <div class="slds-col slds-size--1-of-1  slds-medium-size--2-of-8">
+                                <div class="slds-text-align_center slds-m-around--x-small">
+                                    <lightning-button label="Send Message" disabled={sendDisabled} variant="brand" onclick={finish}></lightning-button>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size--1-of-1  slds-medium-size--2-of-8">
+                                <div class="slds-text-align_center slds-m-around--x-small">
+                                    <lightning-button label="Schedule" variant="brand" onclick={handleClick}></lightning-button>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size--1-of-1  slds-medium-size--2-of-8">
+                                <div class="slds-text-align_center slds-m-around--x-small">
+                                    <lightning-button label="Cancel" onclick={navigateToList}></lightning-button>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size--1-of-1  slds-medium-size--1-of-8">
+                            </div>
+                        </div>
+                        <br>
+                        
+                        <div class="slds-scrollable--y" style="height:500px;overflow-y: auto;">
+                     <!-   <lightning-datatable 
+                                key-field="Id"
+                                data={records}
+                                columns={columns}
+                                onrowaction={handleRowAction}
+                                show-row-number-column
+                                hide-checkbox-column> 
+                            </lightning-datatable> ->
+                            <c-lightning-data-table columns={columns} tabledata={records} onrowaction={handleRowAction}></c-lightning-data-table>
+                        </div>
+
+                        <div class="slds-grid slds-wrap slds-p-around_medium">
+                            <div class="slds-col slds-size--1-of-1  slds-medium-size--1-of-8">
+                            </div>
+                            <div class="slds-col slds-size--1-of-1  slds-medium-size--2-of-8">
+                                <div class="slds-text-align_center slds-m-around--x-small">
+                                    <lightning-button label="Send Message" disabled={sendDisabled} variant="brand" onclick={finish}></lightning-button>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size--1-of-1  slds-medium-size--2-of-8">
+                                <div class="slds-text-align_center slds-m-around--x-small">
+                                    <lightning-button label="Schedule" variant="brand" onclick={handleClick}></lightning-button>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size--1-of-1  slds-medium-size--2-of-8">
+                                <div class="slds-text-align_center slds-m-around--x-small">
+                                    <lightning-button label="Cancel" onclick={navigateToList}></lightning-button>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size--1-of-1  slds-medium-size--1-of-8">
+                            </div>
+                        </div>
+
+                <div data-result>{result}</div>
+                <div data-result>{confirmBox}</div>
+                  <template lwc:if={showSchedular}>
+                    <c-create-scheduler selected-ids={selectedIds} objname={objname} phone-field-a-p-i-name={phoneFieldAPIName} name-field-a-p-i-name={nameFieldAPIName} selected-template-id={selectedTemplateId} report-id={reportId} onclose={handleClose}></c-create-scheduler>
+                </template>
+                </lightning-layout-item> 
+            </lightning-layout>
+        </div>
+    </lightning-card>
+            
+</template> -->

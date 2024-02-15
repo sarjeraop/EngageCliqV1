@@ -1,0 +1,135 @@
+<template>
+   <!-- <lightning-modal-body>  -->
+<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+<div class="slds-modal__container">
+<!-- modal header start -->
+  <header class="slds-modal__header" style="border-bottom:0;">
+     <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleClose}>
+       <lightning-icon icon-name="utility:close"
+           alternative-text="close"
+           variant="inverse"
+           size="small" ></lightning-icon>
+        <span class="slds-assistive-text">Close</span>
+     </button>
+     <div class="wedgbarcard"> 
+        <h2>Schedule Activity</h2>
+    </div>
+
+    <!--  <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Welcome in Apex Hours</h2> -->
+  </header> 
+  <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+        <div class="slds-m-around_x-large" style="margin-top:0px;">
+       <!-- <div class="wedgbarcard"> 
+            <h2>Schedule Activity</h2>
+        </div>-->
+        <div>
+            <lightning-combobox
+                name="frequency"
+                label="Frequency"
+                value={freq}
+                placeholder="Select Frequency"
+                options={options}
+                class="validate"
+                required="true"
+                onchange={handleFrequencyChange} >
+            </lightning-combobox>
+        </div>
+        <template if:true={isFrequencyWeekly}>
+            
+            <lightning-checkbox-group name="Checkbox Group"
+                              label="Select Day/s"
+                              options={dayOptions}
+                              value={dayvalue}
+                              onchange={handleDayChange}>
+            </lightning-checkbox-group>
+        </template>
+
+
+        <!-- <template if:true={isFrequencyYearly}>
+            <lightning-combobox
+                        name="time"
+                        label="Select Month"
+                        value={monthOfYear}
+                        placeholder="Select Month"
+                        class="validate"
+                        options={monthOfYearOptions}
+                        onchange={handleMonthOfYearChange}
+                        required="true" >
+                    </lightning-combobox>
+        </template>
+
+        <template if:true={isFrequencyMonthly}>
+            <lightning-combobox
+                        name="time"
+                        label="Day of Month"
+                        value={daysOfMonth}
+                        placeholder="Select Day of Month"
+                        class="validate"
+                        required="true"
+                        options={daysOfMonthOptions}
+                        onchange={handledaysOfMonthChange} >
+                    </lightning-combobox>
+        </template>
+         -->
+
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col">
+              <span>
+                <div>
+                    <lightning-combobox
+                        name="time"
+                        label="Hour"
+                        value={hours}
+                        placeholder="Select Hour"
+                        options={hourOptions}
+                        class="validate"
+                        required="true"
+                        onchange={handleHourChange} >
+                    </lightning-combobox>
+                </div>
+              </span>
+            </div>
+            <div class="slds-col">
+                <span>
+                    <div>
+                        <lightning-combobox
+                            name="time"
+                            label="Minutes"
+                            value={minutes}
+                            placeholder="Select Minutes"
+                            options={minuteOptions}
+                            class="validate hour"
+                            required="true"
+                            onchange={handleMinuteChange} >
+                        </lightning-combobox>
+                    </div>
+                </span>
+              </div>
+            </div>
+            <template if:true={showdateTimeError}>
+                <p class="slds-text-color_error slds-text-align_center">{dateTimeError}</p>
+            </template>
+            <template lwc:if={showStartDateField}>
+                <div>
+            <!--required="true"-->
+                    <lightning-input label="Start Date" class="startDateValue validate"  value={startDate} onchange={handleStartDate} type="Date" required="true"></lightning-input>
+                 </div>
+            </template>
+        
+        <div>
+            <lightning-input label="End Date" value={endDate}  class="endDateValue validate"  onchange={handleEndDate} type="Date" required="true" disabled={disableEndDate}></lightning-input>
+        </div>
+        <br/>
+        <div class="slds-align_absolute-center slds-m-around_medium">
+            <lightning-button variant="brand" label="Schedule" onclick={handleSchedule}></lightning-button>&nbsp;&nbsp;
+            <lightning-button variant="brand" label="Cancel" onclick={handleClose}></lightning-button>
+    </div>
+    </div>
+    <!-- <div>Cron Expression : {cronExpression}</div>  -->
+  </div>
+   
+   <!-- </lightning-modal-body>  -->
+</div>
+   </section>
+   <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+</template>

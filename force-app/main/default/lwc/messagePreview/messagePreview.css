@@ -1,0 +1,13 @@
+.wedgbarcard
+{
+    background-color:#fff;
+    border-radius:20px;
+}
+
+.footerClass
+{
+    opacity: .5;      
+}
+.wordbreck{
+    overflow-wrap: break-word;
+}

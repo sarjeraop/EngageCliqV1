@@ -1,0 +1,52 @@
+<template>
+    <lightning-modal-body>
+        <div class="wedgbarcard">  <div class="slds-grid slds-wrap"> 
+            <div class="slds-var-m-around_medium lgc-bg">
+                <div class="slds-grid slds-wrap">
+                        <div class="slds-var-p-around_medium lgc-bg slds-col ">
+                            <lightning-file-upload
+                                                    label={customLabel.FILEATTACH}
+                                                    name={customLabel.FILEATTACH}
+                                                    accept={acceptedFormats}
+                                                    record-id={recordId}
+                                                    onuploadfinished={handleUploadFinished}
+                                                    >
+                            </lightning-file-upload>
+                        </div> 
+                      
+                        <div class="slds-var-p-around_medium lgc-bg slds-col slds-size_12-of-12">
+                            <lightning-input type="text"
+                                    name={customLabel.SELECTFILE}
+                                    placeholder={customLabel.SELECTFILE}
+                                    label={customLabel.FILENAME}
+                                    value={fileName}
+                                    onchange={handleChange}
+                                    disabled={showData}>
+                            </lightning-input>
+                            <template if:true={tableShowObject}>  
+                                <div class="slds-box slds-scrollable" style="max-height: 100px; overflow-y: auto;">
+                                    <!-- Table to show aotosuggest  start -->
+                                    <template iterator:it={tempObjList} for:index="index">  
+                                        <div onclick={handleSelect} key={it.value.id} data-id={it.index} style="cursor: pointer;">  
+                                            <div class="slds-m-around_medium slds-scrollable">                              
+                                                <lightning-formatted-rich-text value={it.value.name}>
+                                                </lightning-formatted-rich-text>  
+                                            </div>  
+                                        </div>  
+                                    </template>
+                                    <!-- Table to show aotosuggest  end -->
+                                </div>
+                            </template>
+                        </div> 
+                                                                         
+                </div>
+            
+            </div>
+        </div> 
+        </div>
+    </lightning-modal-body>
+
+    <lightning-modal-footer>
+        <lightning-button label={customLabel.CONFIRM} onclick={handleConfirm} disabled={disableButton}></lightning-button>
+    </lightning-modal-footer>
+</template>

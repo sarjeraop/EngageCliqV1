@@ -1,0 +1,36 @@
+<template>
+            <div  style="max-height:250px; overflow:auto;">
+            <p class="wordbreck "><b>{templateParameters.header}</b></p></br> 
+            
+              <lightning-formatted-rich-text
+                value={templateParameters.previewMessage}>
+              </lightning-formatted-rich-text>
+
+            <div class="footerClass wordbreck">
+                <p> {templateParameters.footer}</p>
+            </div>
+                <div class="slds-clearfix">
+                  <div class="slds-float_right footerClass">
+                    <p>{currenttime}</p>
+                  </div>
+              </div>
+            <div > 
+                <template lwc:if={templateParameters.isBusinessInitiative}>
+                 <template for:each={templateParameters.listOfButton} for:item="ButtonName">                       
+                      <div class="list-group-item list-group-item-action" key={ButtonName}>
+                        <hr style="margin: 0px; padding:0px;" /> 
+                            <button class="slds-button slds-align_absolute-center">{ButtonName.text}</button></n>
+                      </div>
+                  </template>
+                </template>
+                <template lwc:else>
+                  <template for:each={templateParameters.listOfButtonUI} for:item="ButtonName">                       
+                    <div class="list-group-item list-group-item-action" key={ButtonName}>
+                      <hr style="margin: 0px; padding:0px;" /> 
+                          <button class="slds-button slds-align_absolute-center">{ButtonName.value}</button></n>
+                    </div>
+                </template>
+            </template>
+            </div> 
+            </div>
+</template>

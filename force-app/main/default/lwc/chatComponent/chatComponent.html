@@ -1,0 +1,286 @@
+<template>
+<c-lwc_streaming_api 
+    channel="/topic/NewIBMCreated" 
+    api-version="45.0" 
+    debug=true
+    onmessage={handleMessage} 
+    onerror={handleError} 
+    class="lwc_streaming_api-1">
+</c-lwc_streaming_api>
+
+<c-lwc_streaming_api 
+    channel="/topic/NewOBMUpdated" 
+    api-version="45.0" 
+    debug=true
+    onmessage={handleMessage} 
+    onerror={handleError} 
+    class="lwc_streaming_api-1">
+</c-lwc_streaming_api>
+<div class="chatpanel">
+    <div class="slds-grid">
+        <div class="slds-col slds-size_12">
+        
+            <section role="log" class="slds-chat" style="overflow:auto; height:inherit;" >
+                <ul class="slds-chat-list headertile">
+                <li class="slds-chat-listitem slds-chat-listitem_bookend headertile">
+                <div class="slds-chat-bookend">
+                <span class="slds-icon_container slds-icon-utility-chat slds-chat-icon">
+                <svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chat"></use>
+                </svg>
+                </span>
+                    <p> <lightning-icon  icon-name={activeIcon} variant={activeColour} title={iconText}  size='small'></lightning-icon>
+                        &nbsp;&nbsp;Chat started by <b>{selectedName}</b></p>
+                </div>
+                </li>
+                
+                <div class="chatcontainer" id={messageBody}>
+                <template for:each={messages} for:item="messageWrapper">
+                    <template lwc:if={messageWrapper.isInbound}>
+
+                            <li key={messageWrapper.inOutMessage.id} class="slds-chat-listitem slds-chat-listitem_inbound">
+                                <div class="slds-chat-message">
+                                    <div class="slds-chat-message__body">
+                                        <div class="slds-chat-message__text slds-chat-message__text_inbound">
+                                                <span><lightning-formatted-rich-text value={messageWrapper.inOutMessage.inBound.msg}></lightning-formatted-rich-text></span>
+                                        </div>
+                                        <div class="slds-chat-message__meta">
+                                            <p class="message-info-inbound"> <lightning-formatted-date-time 
+                                                value={messageWrapper.inOutMessage.inBound.createdDate} 
+                                                year="numeric" month="numeric" day="numeric" 
+                                                hour="2-digit" minute="2-digit" hour12="true">
+                                                </lightning-formatted-date-time>
+                                            </p>
+                                    </div>
+                                    </div>
+                                </div>
+                            </li>
+                    </template> 
+                <template lwc:else>
+                    <li key={messageWrapper.inOutMessage.id} class="slds-chat-listitem slds-chat-listitem_outbound">
+                        <div class="slds-chat-message">
+                            <div class="slds-chat-message__body">
+                                
+                                <div class="slds-chat-message__text slds-chat-message__text_outbound-agent">
+                                        <template lwc:if={messageWrapper.isMedia}>
+                                            <lightning-icon icon-name={messageWrapper.mediaType} alternative-text='attachment' size='small' title='attachment'></lightning-icon>
+                                            <a data-id={messageWrapper.inOutMessage.outBound.media} onclick={handlePreview} download="disabled">{messageWrapper.mediaName}  </a>                                                                                
+                                            <br><span><lightning-formatted-rich-text class="outbondhyper" value={messageWrapper.inOutMessage.outBound.msg}></lightning-formatted-rich-text></span>
+                                        </template> 
+                                        <template lwc:else>                                   
+                                            <span><lightning-formatted-rich-text class="outbondhyper" value={messageWrapper.inOutMessage.outBound.msg}></lightning-formatted-rich-text></span>                                                    
+                                        </template>  
+                                    
+                                </div>
+                                    
+                                    <template if:true={messageWrapper.inOutMessage.outBound.readTime}>
+                                        <div class="slds-chat-message__meta">
+                                        <p class="message-info-outbound">{messageWrapper.inOutMessage.outBound.ownerName}&nbsp;
+                                            <lightning-formatted-date-time 
+                                                            value={messageWrapper.inOutMessage.outBound.readTime}                                                                         
+                                                            hour="2-digit" minute="2-digit" hour12="false">
+                                            </lightning-formatted-date-time>
+                                            <span style="color: rgb(28, 229, 109);" title="Read"> ✓✓</span>
+                                        </p>
+                                    </div>
+                                    </template>
+                                    
+                                    <template if:false={messageWrapper.inOutMessage.outBound.readTime}>
+                                        <template if:true={messageWrapper.inOutMessage.outBound.deliveredTime}>
+                                            <div class="slds-chat-message__meta">
+                                            <p class="message-info-outbound">{messageWrapper.inOutMessage.outBound.ownerName}&nbsp;
+                                                <lightning-formatted-date-time 
+                                                                value={messageWrapper.inOutMessage.outBound.deliveredTime}                                                                         
+                                                                hour="2-digit" minute="2-digit" hour12="false">
+                                                </lightning-formatted-date-time>
+                                                <span style="color: #c5cdc8;" title="Delivered"> ✓✓</span>
+                                            </p>
+                                            </div>
+                                        </template>
+                                        <template if:false={messageWrapper.inOutMessage.outBound.deliveredTime}>
+                                            <template if:true={messageWrapper.inOutMessage.outBound.sentTime}>
+                                                <div class="slds-chat-message__meta">
+                                                <p class="message-info-outbound">{messageWrapper.inOutMessage.outBound.ownerName}&nbsp;
+                                                    <lightning-formatted-date-time 
+                                                                    value={messageWrapper.inOutMessage.outBound.sentTime}                                                                         
+                                                                    hour="2-digit" minute="2-digit" hour12="false">
+                                                    </lightning-formatted-date-time>
+                                                    <span style="color:#c5cdc8;" title="Sent"> ✓</span></p></div>                                        
+                                            </template> 
+                                            <template if:false={messageWrapper.inOutMessage.outBound.sentTime}>
+                                                <template if:true={messageWrapper.inOutMessage.outBound.failedTime}>
+                                                    <div class="slds-chat-message__meta">
+                                                        <p class="message-info-outbound">{messageWrapper.inOutMessage.outBound.ownerName}&nbsp;
+                                                        <lightning-formatted-date-time 
+                                                                        value={messageWrapper.inOutMessage.outBound.failedTime}                                                                        
+                                                                        hour="2-digit" minute="2-digit" hour12="false">
+                                                        </lightning-formatted-date-time>
+                                                        <span style="color:#ed0505;" title="Failed"> x</span>
+                                                    </p></div>
+                                                </template>
+                                            </template>
+                                        </template>
+                                        </template>                                
+                            </div>
+                        </div>
+                    </li>
+                </template>
+                </template>
+                </div>
+
+                </ul>
+            </section>
+        
+        </div>
+    </div>  
+    
+    
+        <template lwc:if={showPopUp}>
+        <c-model-pop-up 
+                        component-data = {childData} 
+                        onpopupmodelevent={handleCustomEvent}>
+        </c-model-pop-up>
+    </template>
+
+    
+    <div data-my-id="demo" class="chatpanelnone">
+        <div class="slds-text-align_right slds-align-bottom slds-p-top_xx-small">
+            <lightning-button-icon 
+                                    icon-name="utility:close" 
+                                    onclick={whatsappTogglePanel} 
+                                    alternative-text={label.CLOSE} 
+                                    title={label.CLOSE}>
+            </lightning-button-icon>
+        </div>
+        <lightning-vertical-navigation>
+            <lightning-vertical-navigation-section>
+                <lightning-vertical-navigation-item
+                                    name={label.TEMPLATE} 
+                                    label ={label.TEMPLATE}
+                                    icon-name="standard:template"                                                            
+                                    icon-alternative-text={label.TEMPLATE} 
+                                    onclick={toolbarClick}>
+                </lightning-vertical-navigation-item>
+
+                <lightning-vertical-navigation-item
+                                    name={label.QUICKTEXT}
+                                    label={label.QUICKTEXT}
+                                    icon-name="standard:quick_text" 
+                                    icon-alternative-text={label.QUICKTEXT} 
+                                    onclick={toolbarClick}>
+                </lightning-vertical-navigation-item>
+
+                <lightning-vertical-navigation-item
+                                    name={label.ATTACHMENTMODEL}
+                                    label={label.ATTACHMENTMODEL}
+                                    icon-name="utility:attach" 
+                                    icon-alternative-text={label.ATTACHMENTMODEL}
+                                    onclick={toolbarClick}>
+                </lightning-vertical-navigation-item>
+
+                <lightning-vertical-navigation-item
+                                    name={label.CLEAR}
+                                    label={label.CLEAR}
+                                    icon-name="utility:delete" 
+                                    icon-alternative-text="Reset" 
+                                    onclick={toolbarClick}>
+                </lightning-vertical-navigation-item>
+                    
+            </lightning-vertical-navigation-section>
+        </lightning-vertical-navigation>
+        
+            
+    </div>
+    
+
+    <div class="richtextbg">
+        <div class="slds-grid">           
+                <div class="slds-col">
+                <lightning-input-rich-text class="validate slds-form-element__control textareahei" style="display: contents;padding-right:10px; word-break:break-all;" 
+                name={label.MESSAGEBODY} label={label.MESSAGEBODY}  placeholder={label.MESSAGETOSEND}
+                value={messageBody} disabled-categories="INSERT_CONTENT, FORMAT_FONT, FORMAT_BODY, ALIGN_TEXT, REMOVE_FORMATTING" 
+                categories="FORMAT_TEXT" formats={allowedFormats} onchange={handleChange} maxlength={maxLenth} 
+                message-when-bad-input={errorMessage}
+                valid={validity} disabled={editMode}>
+
+                <lightning-rich-text-toolbar-button-group slot="toolbar" aria-label="Sample Button Group">
+                    <lightning-rich-text-toolbar-button 
+                                    class="addbtn" 
+                                    name="select" 
+                                    icon-name="utility:add" 
+                                    onclick={whatsappTogglePanel} 
+                                    icon-alternative-text="More">                            
+                    </lightning-rich-text-toolbar-button>                        
+                </lightning-rich-text-toolbar-button-group>
+
+                <lightning-rich-text-toolbar-button-group slot="toolbar" aria-label="Sample Button Group">
+                <template if:true={closeIcon}>
+                    <div class="closeIcon slds-wrap align_right">                        
+                        <lightning-icon 
+                                    icon-name='utility:delete' 
+                                    alternative-text={label.DELETE} 
+                                    size='xx-small' 
+                                    title={label.DELETE} 
+                                    onclick={handleButtonClick}>
+                    </lightning-icon>
+                    <ul>
+                        <li class="slds-list__item slds-m-right_large slds-grid slds-truncate_container_33">
+                            <span class="slds-m-left_xx-small slds-truncate" title={attachmentObject.Name}>
+                                {attachmentObject.Name}
+                            </span>
+                        </li>
+                    </ul>
+                        
+                    </div>
+                </template> 
+                    </lightning-rich-text-toolbar-button-group>
+
+                <lightning-rich-text-toolbar-button-group slot="toolbar" aria-label="Sample Button Group">
+                    <lightning-combobox 
+                                    class="comboboxcont validate" 
+                                    style="width:150px;"  
+                                    name="To business Phone" 
+                                    placeholder={label.SELECTPHONENUMBER}
+                                    dropdown-alignment="bottom-right"
+                                    value={phone} 
+                                    onchange={handlePhoneChange} 
+                                    options={phoneOptions}>
+                    </lightning-combobox>
+                </lightning-rich-text-toolbar-button-group>
+                </lightning-input-rich-text>                                         
+        </div>
+        </div>
+
+
+        <div class="slds-grid"> 
+            <div class="slds-col">
+                <lightning-combobox 
+                class="comboboxconttwo validate" 
+                style="width:150px;"  
+                name="To business Phone" 
+                placeholder={label.SELECTPHONENUMBER}
+                dropdown-alignment="bottom-left"
+                value={phone} 
+                onchange={handlePhoneChange} 
+                options={phoneOptions}>
+</lightning-combobox>
+                    
+            </div>
+        <div class="slds-col">
+            <div class="slds-text-align_right slds-align-bottom slds-p-top_xx-small">
+                <lightning-button 
+                variant="bare" 
+                icon-name="utility:send" 
+                label={label.SEND}
+                title={label.SEND} 
+                onclick={handleSend} 
+                disabled={buttonDisable}>
+                </lightning-button>
+            </div>
+        </div>
+    </div>
+
+        
+    </div>
+</div>  
+</template>

@@ -1,0 +1,101 @@
+<template>
+
+   <lightning-button 
+      label="NEW" 
+      onclick={handleNewClick} 
+      class="slds-m-left_x-small">
+   </lightning-button>
+
+
+      <div style="height: 300px;">
+          <lightning-datatable
+                  key-field="id"
+                  data={data}
+                  hide-checkbox-column="true"
+                  onrowaction={handleRowAction}
+                  columns={columns}>
+          </lightning-datatable>
+      </div> 
+
+      <template if:true={isOpenPopUp}>
+
+         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+          <div class="slds-modal__container">
+
+          <!-- modal header start -->
+            <header class="slds-modal__header">
+               <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                 <lightning-icon icon-name="utility:close"
+                     alternative-text={CLOSE}
+                     variant="inverse"
+                     size="small" ></lightning-icon>
+               </button>
+               <span><b>New Channel Configuration</b></span>
+            </header> 
+          
+            <!-- modal body start -->
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+              <div class="wedgbarcard slds-grid slds-wrap"> 
+                
+                <lightning-input 
+                name="DeveloperName" 
+                value={recChannelConfig.DeveloperName} 
+                label="Name" 
+                onchange={handleChange}
+                
+                required="true"
+                class="validate slds-p-around_medium">
+              </lightning-input><br/>
+
+              <lightning-input 
+                name="API_key__c" 
+                value={recChannelConfig.API_key__c} 
+                label="API KEY" 
+                onchange={handelAPIKEYchange} 
+                required="true"
+                class="validate api slds-p-around_medium">
+              </lightning-input><br/>
+
+              <lightning-input 
+                name="Business_ID__c"
+                value={recChannelConfig.Business_ID__c} 
+                label="Business Id" 
+                onchange={handelBUSINESSIDchange} 
+                required="true"
+                class="validate bsi slds-p-around_medium">
+              </lightning-input><br/>
+
+              <lightning-input 
+                name="PhoneNo_Id__c" 
+                value={recChannelConfig.PhoneNo_Id__c} 
+                label="Phone No Id" 
+                onchange={handelPHONENOIDchange} 
+                required="true"
+                class="validate phi slds-p-around_medium">
+              </lightning-input><br/>
+
+              <lightning-input 
+                name="Endpoint_URL__c" 
+                value={recChannelConfig.Endpoint_URL__c} 
+                label="End Point URL" 
+                onchange={handelENDURLchange} 
+                required="true"
+                class="validate epu slds-p-around_medium">
+              </lightning-input>
+              <br/>   
+                  
+            
+              </div>
+            </div>
+            <!-- modal footer start-->
+            <footer class="slds-modal__footer">
+              <lightning-button label="Save" onclick={handelSave} variant="brand"></lightning-button>
+              <lightning-button class="slds-m-around_medium" label="CANCEL" onclick={handelCancle}></lightning-button>
+          </footer>
+          
+          </div>
+          </section>
+
+         <div class="slds-backdrop slds-backdrop_open"></div>
+      </template>
+</template>

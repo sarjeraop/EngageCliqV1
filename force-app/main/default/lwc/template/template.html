@@ -1,0 +1,92 @@
+<template>
+  <template lwc:if={isChannel}>
+    <div class="createtempcont">
+      <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_7-of-12 slds-large-size_7-of-12">
+          <div class="createtempsec">
+            <div  class="slds-align_absolute-center">
+              <h1>{templateStatus}</h1>
+            </div>
+            <lightning-input type="text" value={childProps.Name__c} data-name="Name__c" class="filedstyle validate nameinput" label="Template Name" field-level-help ="Only include alphanumeric characters and space (A-Z, a-z, 0-9, space )" placeholder="Enter template name" required disabled={disabled} onchange={handleChange} max-length ="80" pattern="[a-zA-Z0-9_\s]*" message-when-pattern-mismatch="Use only letters (A-Z, a-z), numbers (0-9), and spaces."	message-when-too-long="You have exceed max length 256 charecters"></lightning-input>
+            <!--<lightning-input type="text" value={childProps.Description__c}  data-name="Description__c" class="filedstyle validate" label="Description" placeholder="Discription for template" disabled={disabled} onchange={handleChange}></lightning-input>-->
+           
+            <lightning-textarea
+            data-recid="messageBody"
+            name="input1" 
+            class="slds-form-element__control richtextinput filedstyle" 
+            value={childProps.Description__c}
+            data-name="Description__c"
+            label="Description"
+            label-visible="true"
+            placeholder="Description for template"
+            onchange={handleChange}
+            maxlength="1024"
+            disabled={disabled}
+            richtext="true"></lightning-textarea>
+
+           <!--<lightning-input-rich-text
+            data-recid="messageBody"
+            name="input1" 
+            class="slds-form-element__control richtextinput filedstyle" 
+            value={childProps.Description__c}
+            data-name="Description__c"
+            label="Description"
+            label-visible="true"
+            placeholder="Description for template"
+            disabled-categories="INSERT_CONTENT,FORMAT_FONT,FORMAT_BODY, ALIGN_TEXT,REMOVE_FORMATTING,FORMAT_TEXT"
+            onchange={handleChange}
+            maxlength="1024"
+            disabled={disabled}
+            style>
+       </lightning-input-rich-text>-->
+
+            <lightning-input type="text" value={objNameLabel} data-name="Target_Source__c" class="filedstyle validate objectinput" label="Target Object" field-level-help="It enables the selection of objects, and their attributes can be utilized when creating a template body by choosing from a dropdown list" placeholder="Search for target object" required disabled={disabled} onchange={handleChange}></lightning-input>
+            
+            <template if:true={tableShow}>  
+              <div class="slds-box slds-scrollable" style="max-height: 100px; overflow-y: auto;">
+                  <template iterator:it={objList} for:index="index">  
+                      <div onclick={handleSelect} key={it.value.Id} data-id={it.index} style="cursor: pointer;">  
+                          <div class="slds-m-around_medium slds-scrollable">                              
+                              <lightning-formatted-rich-text value={it.value.label}>
+                              </lightning-formatted-rich-text>  
+                          </div>  
+                      </div>  
+                  </template>
+              </div>
+          </template>
+
+          </div>
+        
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-large-size_5-of-12 slds-grid_align-center">
+          <div class="communicationsec">
+            <div  class="slds-align_absolute-center">
+              <h1>Communication Channel</h1>
+            </div>
+            <div class="iconlist">
+              <div class="slds-grid slds-wrap">
+              <template for:each={channels} for:item="keyValue">
+                <div key={keyValue.key} class="slds-col slds-size_1-of-3 slds-medium-size_3-of-12 slds-large-size_3-of-12">
+                    <button class="slds-button button-3d" variant="brand-outline" data-name={keyValue.key} onclick={redirectChannel} >
+                    <img class="slds-p-around_x-small" data-name={keyValue.key} data-id={keyValue.Id} src={keyValue.Logo} alt="" style="width: 100px;" />
+                    </button>         
+                  </div>                
+              </template> 
+              </div>
+              </div>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </template>
+  <template lwc:else>
+    <div class="container">
+      <lwc:component template-parameters={childProps} lwc:is={componentConstructor} ></lwc:component>
+  </div>
+  
+  </template>
+
+ 
+
+</template>

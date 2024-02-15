@@ -1,0 +1,4 @@
+.slds-form-element__label .slds-form-element__legend {
+  font-weight: var(--lwc-fontWeightBold,400) !important;
+  float: left;
+}

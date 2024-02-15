@@ -1,0 +1,208 @@
+<template>
+    <div class="reporttablepanel" aria-disabled="true" aria-readonly="true">
+        <div class="slds-grid slds-grid_align-center">           
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_8-of-12 slds-large-size_8-of-12">
+                    <div class="tablepanel">
+                        <!-- <div class="slds-grid slds-grid_align-center">
+                            <h1>Communication from Report</h1>
+                        </div> -->
+                            <div class="slds-grid slds-wrap slds-p-top_x-small">
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+                                    <lightning-combobox
+                                        name="folders"
+                                        label="Select Folder"
+                                        placeholder="Choose report folder"
+                                        required="true"
+                                        value={value}
+                                        class="validate combostyle"
+                                        options={folderOptions}
+                                        onchange={handleFolderChange} 
+                                        errormessage={reportError}
+                                        field-level-help="Choose the folder containing your desired report.">
+                                    </lightning-combobox>
+                                 </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+                                    
+                                    <lightning-combobox
+                                        name="reports"
+                                        label="Select Report"
+                                        required="true"
+                                        placeholder="Choose a report"
+                                        value={value}
+                                        class="validate combostyle reportclass"
+                                        options={reportOptions}
+                                        onchange={handleReportChange}  field-level-help="Choose a report containing the specific records you want to send templates to.">
+                                    </lightning-combobox>
+                                
+                                    <!-- <lightning-combobox
+                                        name="progress"
+                                        label="Status"
+                                        value=""
+                                        placeholder="Select Progress"
+                                        options={options}
+                                        class="combostyle"
+                                        field-level-help="Some help text"
+                                        onchange={handleChange}
+                                        required
+                                ></lightning-combobox> -->
+
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+                                    <!-- <lightning-input class="combostyle" type="text" label="Associate Object" placeholder="type here..." disabled></lightning-input> -->
+                                    <lightning-input type="text"  label="Associated Object"  disabled="true" class="combostyle associateObj" value={objectDisplayName} field-level-help="Templated messages will be sent to records from this object."></lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+                                    <lightning-combobox
+                                                name="Select Communication Channel"
+                                                label="Select Communication Channel"
+                                                value={value}
+                                                placeholder="Choose a channel"
+                                                options={channelOptions}
+                                                class="validate combostyle commChannel"
+                                                field-level-help="Choose your preferred communication channel."
+                                                onchange={handleChannelChange}
+                                                required="true"
+                                        ></lightning-combobox>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+                                    <lightning-combobox
+                                            name="template"
+                                            label="Select Communication Template"
+                                            required="true"
+                                            placeholder="Choose message template"
+                                            value={value}
+                                            class="validate template combostyle selection"
+                                            options={templateOptions}
+                                            onchange={handleTemplateChange} 
+                                            field-level-help="Choose a messaging template for your communication.">
+                                </lightning-combobox>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+                                    <lightning-combobox
+                                        name="phonefields"
+                                        label="Select Phone Field"
+                                        required="true"
+                                        placeholder="Choose phone number field"
+                                        value={value}
+                                        class="validate phone combostyle selectPhone"
+                                        dropdown-alignment="bottom-right"
+                                        options={phonefieldOptions}
+                                        onchange={handlePhoneFieldChange} field-level-help="Templates will be sent to the phone number entered in this field">
+                                    </lightning-combobox>
+                
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_12-of-12">
+                                    <div class="btnsecreport">
+                                        <!-- <lightning-button label="Next" variant="brand" onclick={handlePreview} ></lightning-button> -->
+                                    <button class="slds-button slds-button_brand" onclick={handleRefresh}>Refresh</button>
+                                    <button class="slds-button slds-button_brand" onclick={handlePreview}>Next</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                    
+                </div>
+            </div>           
+        </div>
+    </div>    
+</template>
+
+
+<!-- 
+
+<template>
+  <lightning-card>
+      
+   <div class="slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none slds-align_absolute-center">
+        <lightning-layout multiple-rows vertical-align="stretch" >
+            <lightning-layout-item class="custom-box slds-box bordercolor" padding="around-small" size="12" flexibility="auto" small-device-size="12" medium-device-size="12">
+                <div class="wedgbarcard" > 
+            <h2> <strong></strong>Choose Report</strong></h2>
+                </div>
+                <div class="slds-p-around_medium">
+                    <lightning-combobox
+                        name="folders"
+                        label="Folder Name"
+                        placeholder="Select Folder"
+                        required="true"
+                        value={value}
+                        class="validate"
+                        options={folderOptions}
+                        onchange={handleFolderChange} field-level-help="Select folder which is having your target report">
+                    </lightning-combobox>
+                </div>
+                <template if:true={showFields}>
+                <div class="slds-p-around_medium">
+                    <lightning-combobox
+                        name="reports"
+                        label="Report Name"
+                        required="true"
+                        placeholder="Select Report"
+                        value={value}
+                        class="validate"
+                        options={reportOptions}
+                        onchange={handleReportChange}  field-level-help="Select report having target records to which you are sending templates">
+                    </lightning-combobox>
+                </div>
+            <template if:true={showSpinner}>
+               <lightning-spinner  size="medium" alternative-text="Loading..." variant="brand"></lightning-spinner>
+            </template>
+            <template if:true ={showPhoneTemplate}>
+            <template if:true={showObjectName}>
+                 <div class="slds-p-around_medium">
+                    <lightning-input type="text"  required="true" label="Object Name"  disabled="true" class="validate" value={objectDisplayName} field-level-help="Records from this object will receive templates"></lightning-input>
+                </div>
+                <div class="slds-p-around_medium slds-has-focus">
+                    <lightning-combobox
+                        name="phonefields"
+                        label="Phone field"
+                        required="true"
+                        placeholder="Select Phone Field"
+                        value={value}
+                        class="validate phone"
+                        options={phonefieldOptions}
+                        onchange={handlePhoneFieldChange} field-level-help="Phone number in this fields will receive templates">
+                    </lightning-combobox>
+                </div>
+                <div class="slds-p-around_medium slds-has-focus">
+                    <lightning-combobox
+                        name="template"
+                        label="Select Template"
+                        required="true"
+                        placeholder="Select Template"
+                        value={value}
+                        class="validate template"
+                        options={templateOptions}
+                        onchange={handleTemplateChange} field-level-help="Templates to be sent">
+                    </lightning-combobox>
+                </div>
+               
+                 <div class="slds-clearfix slds-float_right slds-m-around_xxx-small">
+                   <lightning-button label="Next" variant="brand" onclick={handlePreview} ></lightning-button>
+                 </div>
+             
+         
+            </template>
+            </template>
+            </template>
+             <div class="slds-m-top_xx-large">
+                <h1 class="slds-text-body_small slds-m-bottom_medium slds-m-top_medium">
+                   <ul class="slds-list_dotted">
+                    <li>As per Salesforce limits only 2000 records can be extracted from the report.</li>
+                    <li>Only tabular reports are supported.</li>
+                    <li>Make sure to have first column in reports as recordId.</li>
+                </ul>
+                </h1>
+             </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+   
+  </lightning-card>
+</template> -->

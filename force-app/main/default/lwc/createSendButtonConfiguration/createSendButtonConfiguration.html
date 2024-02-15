@@ -1,0 +1,43 @@
+<template>
+  <template if:false={showSpinner}>
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+      <div class="slds-modal__container">
+        <div class="slds-modal__header">
+          <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{sendConfigurationLabel}</h1>
+        </div>
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+            <div class="slds-card slds-p-around_medium">
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                        <lightning-combobox label="Select an Object" placeholder = "Choose the associated object..." required="true" options={objectNameOptions} onchange={handleObjectNameChange} value={selectedObjectName}></lightning-combobox>
+                        <template if:true={tableShowFields}>
+                          <lightning-dual-listbox  
+                            label="Select Phone Fields"
+                            source-label="Available"
+                            selected-label="Selected"
+                            field-level-help="Add relevant fields associated with phone numbers here."
+                            options={fieldPhoneOptions}
+                            onchange={handlePhoneChange}
+                            value={selectedPhoneFields}
+                            disabled={isPhoneFieldDisabled}
+                            required="true">
+                          </lightning-dual-listbox>
+                      </template>
+                      <lightning-combobox label="Select Name Field" required="true" disabled={isNameFieldDisabled} options={fieldNameOptions} onchange={handleNameFieldChange} field-level-help="Specify the name field" placeholder="Specify the name field" value={selectedNameField}></lightning-combobox>
+                      <lightning-combobox required="true" disabled={isOptInOutDisabled} label="Select Opt In / Opt Out Field" options={fieldOptInOutOptions} onchange={handleOptInOutFieldChange} placeholder="Search for opt in / opt out field" value={selectedOptinOutField}  field-level-help="Opt-In : By enabling this option, you allow us to send you messages, ensuring you stay informed.  Opt-Out : Choosing this option means you won't receive messages.">
+                      </lightning-combobox>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <div class="slds-modal__footer">
+          <button class="slds-button slds-button_neutral" onclick={closeModal} title="Cancel">Cancel</button>
+          <lightning-button value="Save" variant="brand" label="Save" title="Save" onclick={handleSaveClick} class="slds-m-left_x-small"></lightning-button>      </div>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+  </template>
+  <template if:true={showSpinner}> 
+    <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+  </template>
+</template>

@@ -1,0 +1,71 @@
+<template>
+<template if:true={isShowModal}>
+
+
+<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+<div class="slds-modal__container">
+<!-- modal header start -->
+  <header class="slds-modal__header">
+     <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+       <lightning-icon icon-name="utility:close"
+           alternative-text={label.CLOSE}
+           variant="inverse"
+           size="small" ></lightning-icon>
+        <span class="slds-assistive-text">{label.CLOSE}</span>
+     </button>
+    <!--  <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Welcome in Apex Hours</h2> -->
+  </header> 
+
+  <!-- modal body start -->
+  <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+    <div class="wedgbarcard slds-grid slds-wrap"> 
+      
+           
+        <div class="slds-col slds-size_7-of-8">
+
+
+        <lightning-input type="text"
+              name={componentData.compoName}
+              placeholder={componentData.placeHolder}
+              label={componentData.compoName}
+              value={fileName}
+              onchange={handleModelChange}
+              disabled={showData}>
+        </lightning-input>
+        <template if:true={tableShowObject}>  
+        <div class="slds-box slds-scrollable" style="max-height: 200px; overflow-y: auto;">
+          <!-- Table to show aotosuggest  start -->
+          <template iterator:it={tempObjList} for:index="index">  
+              <div onclick={handleSelect} key={it.value.id} data-id={it.index} style="cursor: pointer;">  
+                  <div class="slds-m-around_medium slds-scrollable">                              
+                      <lightning-formatted-rich-text value={it.value.label}>
+                      </lightning-formatted-rich-text>  
+                  </div>  
+              </div>  
+          </template>
+          <!-- Table to show aotosuggest  end -->
+        </div>
+        </template>
+        </div>
+        <div class="slds-col slds-size_1-of-8 slds-align-bottom">
+        <template if:true={newButtonVisibility}>
+        <lightning-button-icon  icon-name="utility:refresh" alternative-text={label.REFRESH} class="slds-p-around_xx-small" onclick={refreshTable}></lightning-button-icon>
+      </template>
+    </div>
+      
+  
+    </div>
+  </div>
+  <!-- modal footer start-->
+  <footer class="slds-modal__footer">
+    <template if:true={componentData.newButtonVisibility}>
+      <lightning-button class="slds-m-around_medium" label={label.CANCEL} onclick={onClickNewButton}></lightning-button>
+      </template>
+    <lightning-button label={label.CONFIRM} onclick={getSelectedRecMessage} disabled={disableButton}></lightning-button>
+  </footer>
+
+</div>
+</section>
+<div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+</template>

@@ -1,0 +1,18 @@
+.wedgbarcard{
+    background-color:#fff;
+    border-radius:20px;
+    /* border: solid 1px #e3e3e3; */
+}
+.wedgbarcard h2{
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 500;
+    border-bottom: solid 3px #b0c4df;
+    padding-right: 1rem;
+    display: inline;
+    padding-bottom: 5px;
+}
+
+.lds-var-m-around_medium{
+    padding: 0px;
+}

@@ -1,0 +1,39 @@
+<template>
+      <div>
+        <canvas class="donut" lwc:dom="manual">
+          
+        </canvas>
+      </div>
+
+    <div class="slds-col slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_12-of-12">
+              <div class="slds-m-around_small">
+                  <article class="slds-card infosection">
+                      <div class="slds-card__body slds-card__body_inner">
+                          <div class="slds-grid slds-wrap slds-grid_align-center infoSectionGap">
+                              <div class="slds-clearfix">
+                                  <span class="Text slds-grid  slds-align_absolute-center">
+                                    Total Records
+                                  </span>
+                                  <div class="slds-float_left slds-p-right_x-large">
+                                      <div class="slds-m-around_small">
+                                          <div>
+                                              <span class="withPhone startDate slds-align_absolute-center">{totalRecordsWithPhoneNo}</span>
+                                          </div>
+                                      </div>
+                                      <span class="slds-align_absolute-center"><b>With Phone Numbers</b></span>
+                                  </div>
+                                  <div class="slds-float_right slds-p-left_x-large">
+                                      <div class="slds-m-around_small">
+                                          <div>
+                                              <span class="withoutPhone startDate slds-align_absolute-center">{totalRecordsWithoutPhoneNo}</span>
+                                          </div>
+                                      </div>
+                                      <span class="slds-align_absolute-center"><b>Without Phone Numbers</b></span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </article>
+              </div>
+          </div>
+</template>

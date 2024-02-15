@@ -1,0 +1,360 @@
+<template>
+	<!-- <p>parent data : {parentData}</p> -->
+	<div class="whatsapptempcon">
+		<div class="slds-grid slds-wrap">
+			                <!--left section-->
+			<div class="slds-col slds-size_1-of-1 slds-medium-size_7-of-12 slds-large-size_7-of-12">
+				<div class="teplatesec">
+					<h1>{templateStatus}</h1>  
+					<div class="slds-grid slds-wrap">
+						<div class="slds-col slds-size_1-of-1 slds-medium-size_7-of-12 slds-large-size_7-of-12">
+							<lightning-combobox  	
+												data-recid="templateType"	
+												name="type" 
+												label="Template Type" 
+												value={objWhatsAppTemplate.Template_Type__c}
+				 								placeholder="Select template type" 
+												options={template_type_options}
+												field-level-help="Choose the template type that aligns with your requirements." 
+												required="true"
+												class="combostyle toppaddingadd validate" 
+												onchange={handleChangeTemplateType}>
+						</lightning-combobox>	 
+						<template lwc:if={objFlag.isBusinessInitiative}>
+								<lightning-radio-group name="CreateNewOrExisting"
+												data-recid="createNewOrExisting"
+												variant="label-hidden"
+												options={optionsCreateNew}
+												value={createNewValue}
+												onchange={handleCreateNewChange}
+												
+												class="customRadioCls toppaddingadd validate" 
+												type="radio"
+												>
+								</lightning-radio-group> 
+								<template lwc:if={objFlag.isApprovedTemplateVisible}>
+									<!--<lightning-combobox 
+															data-recid="approvedTemplates"
+															name="approvedTemplate" 
+															class="validateCombo"
+															label="Select WhatsApp Approved Template"
+															placeholder="Select Template" 
+															options={approvedTemplateOptions} 
+															value={approvedTemplatename}
+															onchange={handleApprovedTemplateChange}>
+									</lightning-combobox>-->			
+				 				<c-approved-templates is-show-modal="true" ontemplateselection={getSelecetdTemplate}></c-approved-templates>
+								</template> 
+							<lightning-combobox
+												data-recid="category"
+												name="Category"
+												label="Category"
+												class="validate toppaddingadd"
+												value={objWhatsAppTemplate.WhatsApp_Category__c}
+												placeholder="Select Category"
+												options={template_category}
+												onchange={updateValues}
+												required="true" >
+						</lightning-combobox>	
+						<lightning-combobox
+												data-recid="language"
+												name="Language"
+												label="Language"
+												class="validate"
+												value={objWhatsAppTemplate.Language__c} 
+												placeholder="Select Language"
+												options={template_language}
+												onchange={updateValues}
+												required="true">
+       		 </lightning-combobox>
+					</template>
+						</div>
+					<div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-large-size_5-of-12">
+						<lightning-input 
+												class="toppaddingadd leftpaddingadd" 
+												type="text" 
+												label="Status" 
+												placeholder="Draft"
+												value={objWhatsAppTemplate.Status__c} 
+												disabled="true">
+						</lightning-input>
+						<lightning-input 
+												name="WhatsAppTemplateName"
+												class="leftpaddingadd" 
+												type="text" 
+												label="WhatsApp Template Name"
+												value={objWhatsAppTemplate.Name__c}
+												max-length ="512"
+												disabled=true>
+						</lightning-input >
+						<lightning-input 
+											name="sourceAttribute"
+											label="Target Object"
+											value={objectName}
+											class=" leftpaddingadd" 
+											disabled="true">
+				 		</lightning-input >						
+	 					<!--<lightning-datatable class="slds-table slds-max-medium-table_stacked-horizontal"
+                                data={dataMergeFields}
+                                draft-values={draftValues} 
+                                hide-checkbox-column 
+                                columns={columns}
+                                key-field="index"
+                                suppress-bottom-bar>
+                            </lightning-datatable> 
+													-->
+					</div>
+				</div>
+
+				<div class="slds-grid slds-wrap">
+					<div class="slds-col slds-size_1-of-1 slds-medium-size_7-of-12 slds-large-size_7-of-12">
+						</div>
+					<div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-large-size_5-of-12">
+						
+					</div>
+				</div>
+				<div class="slds-grid">
+					<div class="slds-col slds-medium-size_12-of-12 slds-large-size_12-of-12">
+						<p class="toppaddingadd strong-text ">Message Body</p>
+						<lightning-input-rich-text
+											data-recid="messageBody"
+											name="input1" 
+											class="slds-form-element__control richtextinput" 
+											value={UIMsgBody}
+											disabled-categories="INSERT_CONTENT,FORMAT_FONT,FORMAT_BODY, ALIGN_TEXT,REMOVE_FORMATTING"
+											categories="FORMAT_TEXT"
+											formats= {allowedFormats}
+											onchange={templateBodyChange}
+											message-when-bad-input={errorMessage}
+                    						valid={validity}
+											maxlength="1024"
+											disabled={disableTemplateEdit}>
+						
+						<lightning-rich-text-toolbar-button-group slot="toolbar" aria-label="Sample Button Group">
+							<lightning-button label="Insert Attribute" data-recid="AttributeButton" name="Insert Attribute" variant="brand"
+							onclick={insertAttribute} ></lightning-button>  					                 
+					</lightning-rich-text-toolbar-button-group>
+				</lightning-input-rich-text>
+
+						<!--    Table Logic Start					-->
+						
+						<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-border_left slds-border_right slds-m-top_small"
+						aria-labelledby="element-with-table-label other-element-with-table-label">
+						<thead>
+							<tr>
+								<th>Index</th>
+								<th>Salesforce Mapping</th>
+								<th>Default Value</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<template for:each={filterList} for:item="filterData" for:index="index">
+								<tr key={filterData}>
+									<td>
+										<lightning-input type="text" name="index" data-index={index}
+															variant="label-hidden" 
+															placeholder="" 
+															onchange={handleChange}
+															value={filterData.index} 
+															disabled="true">
+										</lightning-input>
+									</td>
+									<td>
+										<lightning-combobox name="sfFieldName" data-index={index} variant="label-hidden"
+															placeholder="" 
+															onchange={handleChange} 
+															value={filterData.sfFieldName}
+											options={fieldOptions}>
+										</lightning-combobox>
+									</td>
+									<td>
+										<lightning-input type="text" name="sampleValue" data-index={index}
+											variant="label-hidden" placeholder="" onchange={handleChange}
+											value={filterData.sampleValue}>
+										</lightning-input>
+									</td>
+									<!-- <td>
+										<lightning-button-icon data-index={filterData.id} class="slds-float--right" 
+										icon-name="action:delete" onclick={handleRemoveRow}></lightning-button-icon>
+									</td> -->
+								</tr>
+							</template>
+						</tbody>
+					</table>
+					<!-- 		Table End here 						-->
+				
+					</div>
+				</div>
+
+
+
+<div class="slds-grid slds-wrap ">
+	<div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_4-of-12">
+	<p class="toppaddingadd strong-text ">Interactive Type</p>
+	<div class="radiaGroupinp">
+	<lightning-radio-group name="radioGroupInteractive"
+             id="interactiveId"
+             data-recid="InteractiveTypeRadio"
+						 variant="label-hidden"
+             options={interactiveOptions}
+             value={interactiveValue}
+             onchange={handleInteractiveChange}
+             type="radio"
+             class="customRadioCls ">
+</lightning-radio-group>
+</div>
+</div>
+						<!--<c-chat-i-tbutton></c-chat-i-tbutton>-->
+	<div class="slds-col slds-size_1-of-1">
+		<div class="slds-form-element slds-var-p-around_medium lgc-bg">
+				<template lwc:if={objFlag.isAddButtonVisible}> 
+						<lightning-button 
+								variant="brand" 
+								label={buttonlabel} 
+								title="Add Label" 
+								icon-name="utility:new"
+								disabled={disableButton} 
+								onclick={addRow} 
+								class="slds-var-p-around_medium slds-p-left_none whitecolorbtn"
+								>
+						</lightning-button>
+						
+						<template for:each={itemList} for:item="item" for:index="index">
+								<lightning-input 
+										key={item.id}
+										access-key={index}
+										id={item.index}
+										type="text" 
+										label="Label" 
+										value={item.value}                 
+										onchange={bindFieldValue} 
+										maxlength="25"
+										>
+						</lightning-input>
+						</template>
+				</template>
+				<template if:true={objFlag.isInteractiveButton}>
+						<c-interactive-button 
+											interactive-value={interActiveButtonValue} 
+											button-list={buttonListSelected}  
+											template-category={objWhatsAppTemplate.WhatsApp_Category__c} 
+											disable-fields={objFlag.disableButtons}
+											onselectedrow={handleSelectedRow}>
+						</c-interactive-button><!--{disableButtons}-->
+				</template>
+				
+				</div>
+	</div>
+<div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_4-of-12">
+<p class="toppaddingadd strong-text ">Header (Optional)</p>
+<div class="radiaGroupinp">
+<lightning-radio-group name="HeaderRadioGroup"
+				data-recid="HeaderRadioGroup"
+				variant="label-hidden"
+				options={headerOptions}
+				value={headerSelectedValue}
+				onchange={handleHeaderChange}
+				class="customRadioCls" 
+				type="radio"
+				>
+</lightning-radio-group> 
+<template lwc:if={objFlag.isBusinessInitiative}>
+<lightning-input type="radio" label="Media" value="Media" disabled></lightning-input>
+</template>
+</div>
+</div>
+<div class="slds-col slds-size_1-of-1 slds-medium-size_8-of-12 slds-large-size_8-of-12">
+<template lwc:if={isTextHeader}>
+
+<lightning-input 
+				data-recid="HeaderText"
+				name="HeaderText"
+				type="text" 
+				label="Enter text" 
+				value={headerTextValue}                 
+				onchange={updateValues}
+				class="toppaddingadd validate1"
+				maxlength="60">
+</lightning-input> 
+
+</template>     
+<template lwc:if={isMedia}>
+<p class="toppaddingadd strong-text ">Media</p>
+<lightning-radio-group 
+				id="headerId"
+				data-recid="HeaderMediaRadio"
+				name="radioGroup1"
+				options={mediaOptions}
+				value={mediaOptionValue}
+				onchange={handleMediaChange}
+				type="radio"
+				disabled={disableTemplateEdit}>
+</lightning-radio-group>
+</template>
+<template lwc:if={isMediaText}>
+	<lightning-button label="Upload media file" onclick={openAttachmentModal}></lightning-button>
+	<template lwc:if={objFlag.isMediaUrl}>
+<lightning-input 
+				data-recid="HeaderMediaURL"
+				id="mediaId"
+				name="HeaderMediaURL"
+				type="text" 
+				label="Enter URL"
+				value={mediaURLValue} 
+				 disabled=true            
+				onchange={updateValues}>
+</lightning-input>
+</template>
+</template>
+</div>
+</div>
+<div class="slds-grid">
+<div class="slds-col slds-medium-size_12-of-12 slds-large-size_12-of-12">
+<p class="toppaddingadd strong-text ">Footer (Optional)</p>
+<lightning-input 
+				data-recid="Footer"
+				name="Footer"
+				type="text" 
+				variant="label-hidden"
+				value={footerTextValue}                 
+				onchange={updateValues}
+				maxlength="60"
+				class="validate1"
+				>
+</lightning-input>
+</div>
+</div>
+<br>
+
+				<div class="slds-grid">
+					<div class="slds-col slds-size_1-of-1 slds-medium-size_12-of-12 slds-large-size_12-of-12">
+						<div class="btnsec">
+							<button class="slds-button slds-button_brand" onclick={handleCancel}>Cancel</button>
+							<button class="slds-button slds-button_brand" disabled={objFlag.disableSaveButton} onclick={handleSave}>Save</button>
+						</div>
+					</div>
+				</div>
+				
+				</div>
+				<!--LeftSide End-->
+
+			</div>
+		<!--</div>-->
+		<!--end left section-->
+		<div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-large-size_5-of-12">
+			<div class="previewsec">
+				<!-- <img src={whatsappBG} alt="" /> -->
+				<h1>Message Preview</h1>
+				<div class="slds-grid slds-wrap slds-grid_align-center">
+					<div class="privscreen">
+						<div class="screenbody">
+							<c-message-preview template-parameters={parameters} ></c-message-preview><!--{disableButtons}-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</template>

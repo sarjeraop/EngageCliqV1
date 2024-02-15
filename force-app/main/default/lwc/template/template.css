@@ -1,0 +1,57 @@
+.createtempcont{
+  background-color:#f0f7ff;
+  height: 100vh;
+}
+.createtempcont h1{
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+  border-bottom: solid 3px #b0c4df;
+  padding-right: 1rem;
+  display: inline;
+  padding-bottom: 5px;
+}
+.createtempsec{
+  padding:3rem;
+}
+.createtempsec .filedstyle{
+  margin-top:2rem;
+  --slds-c-input-color-border:#fff;
+
+}
+.communicationsec{
+  background-color: #fff;
+  padding:3rem;
+  height: 100vh;
+}
+.communicationsec .iconlist{
+  margin-top:2rem;
+}
+.communicationsec .iconlist img{
+  display: block;
+  width:75%;
+}
+
+.channels{
+  padding: 3rem;
+}
+
+.button-3d {
+    box-shadow: 0 2px 4px darkslategray;
+    height: 60%;
+    width: 60%;
+}
+
+.icon-3d{
+  width: 100%;
+}
+
+@media screen and (max-width:600px) {
+  .communicationsec{padding: 2rem;}
+  .createtempsec{padding: 2rem;}
+  .createtempsec .filedstyle{
+    margin-top:1rem;
+    
+  }
+  
+}

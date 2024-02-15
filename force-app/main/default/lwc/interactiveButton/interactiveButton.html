@@ -1,0 +1,142 @@
+<template>
+<lightning-card>
+            <div class="slds-col slds-size_1-of-1">
+                <div class="slds-var-p-around_medium lgc-bg">
+                    <lightning-radio-group 
+                            name="radioGroup"
+                            label=""
+                            options={interactiveOptions}
+                            value={interactiveValue}
+                            onchange={handleInteractiveChange}
+                            type="radio"
+                            disabled={disableFields}>
+                    </lightning-radio-group>
+                </div>
+            </div>
+            <!-- conditional rendering for quick action start -->
+            <template if:true={objFlag.quickActioyButton}>
+                <div class="slds-col slds-size_1-of-1">
+                    <div class="slds-form-element slds-var-p-around_medium lgc-bg">
+                        <template lwc:if={objFlag.isAddButtonVisible}> 
+                                <lightning-button 
+                                    variant="brand" 
+                                    label={buttonlabel} 
+                                    title="Add Label" 
+                                    icon-name="utility:new"
+                                    disabled={disableButton} 
+                                    onclick={addRow} 
+                                    class="slds-var-p-around_medium slds-p-left_none whitecolorbtn">
+                                </lightning-button> 
+                            <template if:true={objFlag.addButtonFlag}>
+                                <template for:each={buttonList} for:item="item" for:index="index" >
+                                    <div class="slds-grid slds-wrap" key={item.id}>
+                                        <div class="slds-col slds-size_4-of-12">               
+                                                <lightning-combobox   
+                                                            access-key={index}
+                                                            id={item.index}
+                                                            name="type"                                                                            
+                                                            label="Action type"
+                                                            value={item.type}
+                                                            placeholder="Select Action"
+                                                            options={actionOptions}
+                                                            onchange={bindFieldValue}
+                                                            disabled={disableFields}>
+                                                </lightning-combobox>
+                                        </div>                       
+                                        <div class="slds-col slds-size_4-of-12" if:true={showButtonTextField}>
+                                            <lightning-input 
+                                                        key={item.id}                                      
+                                                        access-key={index}
+                                                        id={item.index}
+                                                        name="text"
+                                                        type="text" 
+                                                        label="Button text"
+                                                        value={item.text}                 
+                                                        onchange={bindFieldValue}
+                                                        required 
+                                                        maxlength="25"
+                                                        disabled={disableFields}>
+                                            </lightning-input>
+                                        </div>
+                                        <div class="slds-col slds-size_4-of-12" if:true={showButtonTextField}>        
+                                            <lightning-input
+                                                        key={item.id}
+                                                        access-key={index}
+                                                        id={item.index}
+                                                        name="phone_number_OR_url"
+                                                        type="text" 
+                                                        label="Phone/url" 
+                                                        value={item.phone_number_OR_url}                 
+                                                        onchange={bindFieldValue} 
+                                                        maxlength={maxLength}
+                                                        required 
+                                                        disabled={disableFields}>
+                                            </lightning-input>
+                                        </div>       
+                                    </div>
+                                </template>
+                            </template>
+                        </template>
+                    </div>
+                </div>  
+            </template>
+            <!-- conditional rendering for quick action end --> 
+
+            <!-- conditional rendering for quick reply start -->          
+            <template if:true={objFlag.quickReplyButton}>
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="slds-form-element slds-var-p-around_medium lgc-bg">
+                            <template lwc:if={objFlag.isAddButtonVisible}> 
+                                    <lightning-button 
+                                        variant="brand" 
+                                        label={buttonlabel} 
+                                        title="Add Label" 
+                                        icon-name="utility:new"
+                                        disabled={disableButton} 
+                                        onclick={addRow} 
+                                        class="slds-var-p-around_medium slds-p-left_none whitecolorbtn">
+                                    </lightning-button> 
+                                <template if:true={objFlag.addButtonFlag}>
+                                    <template for:each={buttonList} for:item="item" for:index="index" >
+                                        <div class="slds-grid slds-wrap" key={item.id}>
+                                        <template if:false={objFlag.comboboxDisableFlag}>
+                                            <div class="slds-col slds-size_4-of-12">                      
+                                                <lightning-combobox
+                                                                key={item.id}
+                                                                access-key={index}
+                                                                id={item.index}
+                                                                name="typeAction"
+                                                                label="Action type"
+                                                                value={item.typeAction}
+                                                                placeholder="Select Action"
+                                                                options={quickReplyOptions}
+                                                                onchange={bindFieldValue}
+                                                                disabled={disableFields}>
+                                                </lightning-combobox>
+                                            </div>
+                                        </template>
+                                            <div class="slds-col slds-size_4-of-12">
+                                                <lightning-input
+                                                            key={item.id}                                      
+                                                            access-key={index}
+                                                            id={item.index}
+                                                            name="text"
+                                                            type="text" 
+                                                            label="Button text" 
+                                                            value={item.text}                 
+                                                            onchange={bindFieldValue} 
+                                                            maxlength="25"
+                                                            required 
+                                                            disabled={disableFields}>
+                                                </lightning-input>
+                                            </div>   
+                                        </div>
+                                    </template>
+                                </template>
+                            </template>
+                        </div>
+                    </div>
+            </template>
+            <!-- conditional rendering for quick reply end -->
+</lightning-card>
+</template>

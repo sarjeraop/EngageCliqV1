@@ -1,0 +1,71 @@
+.chatpanel{ background-color: #fff; padding:1rem; position: relative; overflow: auto;}
+.richtextbg{ background-color:#f0f7ff; padding: 1rem; border-radius:10px;}
+.richtextpanel { --slds-c-textarea-sizing-max-height:700px;}
+.richtextpanel .slds-rich-text-editor_toolbar-only{
+    background-color: #000;
+}
+
+.slds-form-element__control{ border: none!important;}
+.comboboxcont{ position: absolute; right:10px; top:-11px;}
+
+.comboboxconttwo{ display: none;}
+.slds-chat-listitem_bookend{ background-color:#fff9ed; font-size: 1.1rem;}
+.slds-chat-listitem_bookend p{ font-size: 1rem; color: #600913;}
+.slds-chat-message__text_inbound{ background-color:#f1f1f2; width:80%;}
+.slds-chat-message__text_outbound-agent{ background-color:#f0f7ff; color:#000; width:80%;}
+
+.chatpanelnone{
+    background-color:#f1f1f1;
+        padding: 1rem;
+        padding-right: 2rem;
+        padding-bottom: 2rem;
+        color:#fff;
+        z-index:99;
+        position: absolute;
+        left:-350px;
+        bottom: 0px;
+        transition:1s;
+        
+
+}
+.chatpaneldisplay{
+    background-color:#f1f1f1;
+        padding: 1rem;
+        padding-right: 2rem;
+        padding-bottom: 2rem;
+        color:#000;
+        z-index: 99;
+        margin:1rem;
+        position: absolute;
+        transition:1s;
+        bottom: 0px;
+        left:0px;
+}
+.btnsytle{
+    --slds-c-icon-color-foreground: #fff;
+}
+.chatcontainer{
+    height: 400px;
+    position: relative; overflow: auto;
+}
+.slds-nav-vertical__action{ padding-left:0px;--sds-c-icon-color-foreground-default: #bcbdc0;}
+.message-info-outbound {
+    text-align: right; /* Align the content to the right */
+    margin-right: 10px; /* Add some right margin for spacing */
+    font-size: 10px; /* Adjust the font size to your preference */
+}
+.formatted-rich-text p a{ color: #000;}
+.textareahei {
+    --slds-c-textarea-sizing-min-height:100px;
+    --slds-c-textarea-sizing-max-height:100px;
+}
+
+@media screen and (max-width: 600px){
+    .comboboxcont{ display: none;}
+    .comboboxconttwo{ display: block; position: relative; margin-top: -33px;}
+    .textareahei {
+        --slds-c-textarea-sizing-min-height:80px;
+        --slds-c-textarea-sizing-max-height:80px;
+    }
+    
+}

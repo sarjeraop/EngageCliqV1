@@ -1,0 +1,154 @@
+<template>
+    <div class="reporttablepanel">
+        <div class="slds-grid slds-grid_align-center">           
+                <div class="slds-col slds-size_8-of-12">
+                    <div class="tablepanel">
+                        <div class="slds-grid slds-grid_align-center">
+                            <h1>Bulk Communication Through List View</h1>
+                        </div>
+                            <div class="slds-grid slds-wrap slds-p-top_x-small">
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+                                    <div class="slds-p-around_medium lgc-bg slds-text-align_right">
+                                        <span style="color:red">*</span> Select Communication Channel
+                                        <!-- <lightning-helptext class="slds-p-left_xx-small" content="You'll receive weekly updates"></lightning-helptext> -->
+                                    </div>
+                                   
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_4-of-12">
+                                    <lightning-combobox
+                                                name="Select Channel"
+                                                value={selectedChannelName}
+                                                options={availableChannelsMap}
+                                                placeholder="Choose Channel"
+                                                onchange={handleSelectedChannel}                                            
+                                                ></lightning-combobox>
+                                <template if:true={showChannelError}>
+                                    <p class="P">Complete this field.</p><br>
+                                </template>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+                                    <div class="slds-p-around_medium lgc-bg slds-text-align_right">
+                                        <span style="color:red">*</span> Select Communication Template
+                                        <!-- <lightning-helptext class="slds-p-left_xx-small" content="Select Communication Template"></lightning-helptext> -->
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_4-of-12"><!--activeApprovedTemplatesMap}-->
+                                    <lightning-combobox
+                                        name="Select the Template"
+                                        value={selectedTemplateId}
+                                        placeholder="Choose Message Template"
+                                        options={activeApprovedTemplatesMap} 
+                                        onchange={handleSelectedTemplate} >
+                                    </lightning-combobox>
+                                <template if:true={showTemplateError}>
+                                    <p class="P">Complete this field.</p><br>
+                                </template>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+                                    
+                                    <div class="slds-p-around_medium lgc-bg slds-text-align_right">
+                                        Template Body Preview
+                                     <!-- <lightning-helptext class="slds-p-left_xx-small" content="Selected template's preview"></lightning-helptext> -->
+                                    </div>          
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_4-of-12">
+                                     <!-- <lightning-textarea 
+                                        name="input5" 
+                                        disabled value={selectedTemplateText}>
+                                    </lightning-textarea>  -->
+                                    <lightning-input-rich-text
+                                        class="disableCursor validate"
+                                        type="text" 
+                                        value={selectedTemplateText} 
+                                        disabled-categories="INSERT_CONTENT,FORMAT_TEXT,FORMAT_FONT,FORMAT_BODY, ALIGN_TEXT,REMOVE_FORMATTING"
+                                        disabled=true>
+                                    </lightning-input-rich-text>
+                                    <template if:true={showAccessError}>
+                                        <p class="P">You do not have access to view merge field used in this template.</p><br>
+                                    </template>
+                                </div>
+                                
+                                <!-- rati-->
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_6-of-12">
+                                    
+                                    <div class="slds-p-around_medium lgc-bg slds-text-align_right">
+                                        <span style="color:red">*</span>Select Phone Field
+                                     <!-- <lightning-helptext class="slds-p-left_xx-small" content="Selected template's preview"></lightning-helptext> -->
+                                    </div>          
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_4-of-12">
+                                <lightning-combobox
+                                        name="phonefields"
+                                        placeholder="Choose phone number field"
+                                        value={value}
+                                        class="validate phone combostyle selectPhone"
+                                        dropdown-alignment="bottom-right"
+                                        options={phonefieldOptions}
+                                        onchange={handlePhoneFieldChange} >
+                                    </lightning-combobox>
+                                    <template if:true={showPhoneFieldError}>
+                                        <p class="P">Complete this field.</p><br>
+                                    </template>
+                                    
+                                </div>
+                                <!--     -->
+                            </div>
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_10-of-12 slds-large-size_10-of-12">
+                                    <div class="btnsec">
+                                        <!-- <lightning-button  slot="actions" label="Cancel" onclick={navigateToList}></lightning-button> &nbsp;
+                                        <lightning-button  slot="actions" label="Next" onclick={finish}></lightning-button> &nbsp; -->
+                                    <button class="slds-button slds-button_brand" onclick={navigateToList}>Cancel</button>
+                                    <button class="slds-button slds-button_brand" onclick={finish} disabled={nextDisable}>Next</button> 
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>           
+                </div>
+            </div>    
+        </template>
+
+<!-- 
+<template>
+    <template if:true={loader}>
+        <lightning-spinner 
+            alternative-text="Loading..." 
+            size="large"
+            variant="brand"
+          ></lightning-spinner>
+    </template>
+                <lightning-combobox
+                    name="Select Your Channel"
+                    label="Select Your Channel"
+                    value={selectedChannelName}
+                    placeholder="Select a channel..."
+                    options={availableChannelsMap}
+                    required = true
+                    onchange={handleSelectedChannel} ></lightning-combobox>
+                 <lightning-combobox
+                    name="Select the Template"
+                    label="Select the Template"
+                    value={selectedTemplateId}
+                    placeholder="Select Template..."
+                    options={activeApprovedTemplatesMap}
+                    required = true
+                    onchange={handleSelectedTemplate} ></lightning-combobox> <br/>
+                <template if:true={showTemplatePreview}>
+                    <lightning-card><!-  style="border:1px;"> ->
+                        <lightning-input-rich-text
+                                        class="disableCursor"
+                                        type="text" 
+                                        label="Template body:" 
+                                        label-visible="true"
+                                        value={selectedTemplateText} 
+                                        disabled-categories="INSERT_CONTENT,FORMAT_TEXT,FORMAT_FONT,FORMAT_BODY, ALIGN_TEXT,REMOVE_FORMATTING"
+                                        disabled=true>
+                        </lightning-input-rich-text>
+                    </lightning-card>
+                </template>
+             <lightning-button slot="actions" label="Cancel" onclick={navigateToList}></lightning-button> &nbsp;
+             <lightning-button slot="actions" label="Next" onclick={finish}></lightning-button> &nbsp;
+           
+</template> -->
